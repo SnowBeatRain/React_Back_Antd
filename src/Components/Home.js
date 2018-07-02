@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import "./index.css";
+import "./Home.css";
 import { Layout, Menu, Icon, Breadcrumb } from "antd";
-import RouterMap from "../../Router/RouterMap";
 import { Link } from "react-router";
 import axios from "axios";
-import domain from "../domain";
+import domain from "./domain";
 const { Header, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
 
-class Index extends Component {
+class HomeCom extends Component {
   state = {
     menusList: [],
     collapsed: false,
@@ -16,16 +15,14 @@ class Index extends Component {
     openKeys: []
   };
   // submenu keys of first level
-  rootSubmenuKeys = ["sub1", "sub2", "sub4"];
+  rootSubmenuKeys = ["0 ", "1 ", "2 ","3 ","4 ","5 ","6 ","7 ","8 ","9 "];
 
   onOpenChange = openKeys => {
     const latestOpenKey = openKeys.find(
       key => this.state.openKeys.indexOf(key) === -1
     );
-    console.log(latestOpenKey);
     if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       this.setState({ openKeys });
-      console.log(this.state.openKeys);
     } else {
       this.setState({
         openKeys: latestOpenKey ? [latestOpenKey] : []
@@ -38,7 +35,6 @@ class Index extends Component {
     });
   };
   componentWillMount() {
-    console.log(domain.baseurl);
     this.setState({
       clientHeight: document.body.clientHeight
     });
@@ -149,4 +145,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default HomeCom;

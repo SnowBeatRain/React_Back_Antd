@@ -7,10 +7,10 @@ import {
   Redirect,
   IndexRoute
 } from "react-router";
-import Home from "../Components/Home/index";
+import Home from "../Components/Home";
 import App from "../App";
-import UserList from "../Components/Home/Pages/userList";
-import OrderList from "../Components/Home/Pages/orderList";
+import UserList from "../Components/Pages/userList";
+import OrderList from "../Components/Pages/orderList";
 
 export default class RouterMap extends React.Component {
   render() {
