@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import "./index.css";
+import "./App.css";
 import { Layout, Menu, Icon, Breadcrumb } from "antd";
-import RouterMap from "../../Router/RouterMap";
-import { Link } from "react-router";
-import axios from "axios";
-import domain from "../domain";
+// import RouterMap from "../../Router/RouterMap";
+import RouterMap from "./Router/RouterMap";
+
 const { Header, Sider, Content } = Layout;
 const SubMenu = Menu.SubMenu;
-
-class Index extends Component {
+// import Button from "antd/lib/button";
+// import { Button } from "antd";
+class App extends Component {
   state = {
-    menusList: [],
     collapsed: false,
     clientHeight: 0,
     openKeys: []
@@ -38,26 +37,17 @@ class Index extends Component {
     });
   };
   componentWillMount() {
-    console.log(domain.baseurl);
     this.setState({
       clientHeight: document.body.clientHeight
     });
-    // axios.defaults.baseURL = "http://spsapp.spsing.com";
-
-    var Token =
-      "A98E6AE5AE191FB218DED0DF7AC178AF2B36CACA9A86876DB50B7190CE3E9F95375A47ACBDD377B9ED228D0ECC9C6ED29B7F0AF5B27176A37E83910CFA075304";
-    axios
-      .get(domain.baseurl + "/api/Menu/GetMenus", { params: { Token: Token } })
-      .then(res => {
-        this.setState({
-          menusList: res.data.Result
-        });
-        console.log(this.state.menusList);
-      })
-      .catch(res => {
-        console.log(res);
-      });
   }
+  // render() {
+  //   return (
+  //     <div>
+  //       <RouterMap />
+  //     </div>
+  //   );
+  // }
   render() {
     return (
       <Layout>
@@ -68,30 +58,26 @@ class Index extends Component {
           style={{ background: "#fff", minHeight: this.state.clientHeight }}
         >
           <div className="logo">123213</div>
-
           <Menu
             mode="inline"
             openKeys={this.state.openKeys}
             onOpenChange={this.onOpenChange}
           >
-            {this.state.menusList.map((item, index) => (
-              <SubMenu
-                key={index + " "}
-                title={
-                  <span>
-                    <Icon type="mail" />
-                    <span>{item.name}</span>
-                  </span>
-                }
-              >
-                {this.state.menusList[index].snippet.map((item1, index) => (
-                  <Menu.Item key={item1.urlf.split(".")[0]}>
-                    <Link to={item1.urlf.split(".")[0]}>{item1.title}</Link>
-                  </Menu.Item>
-                ))}
-              </SubMenu>
-            ))}
-            {/* <SubMenu
+            <SubMenu
+              key={"sub" + 1}
+              title={
+                <span>
+                  <Icon type="mail" />
+                  <span>Navigation One</span>
+                </span>
+              }
+            >
+              <Menu.Item key="1">Option 1</Menu.Item>
+              <Menu.Item key="2">Option 2</Menu.Item>
+              <Menu.Item key="3">Option 3</Menu.Item>
+              <Menu.Item key="4">Option 4</Menu.Item>
+            </SubMenu>
+            <SubMenu
               key={"sub" + 2}
               title={
                 <span>
@@ -100,10 +86,10 @@ class Index extends Component {
                 </span>
               }
             >
-              <Menu.Item key="orderList">
-                <Link to="/orderList">userList</Link>
-              </Menu.Item>
-            </SubMenu> */}
+              <Menu.Item key="5">Option 5</Menu.Item>
+              <Menu.Item key="6">Option 6</Menu.Item>
+              <Menu.Item key="7">Option 7</Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout>
@@ -132,16 +118,7 @@ class Index extends Component {
               minHeight: 280
             }}
           >
-            {/* <RouterMap /> */}
-            {this.props.children}
-            {/* {React.Children.map(this.props.children, function(value, key) {
-              return (
-                <li>
-                  {value}----{key}
-                </li>
-              );
-            })} */}
-            {this.props.children ? "" : <div>12313123</div>}
+            <RouterMap />
           </Content>
         </Layout>
       </Layout>
@@ -149,4 +126,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default App;
