@@ -1,107 +1,29 @@
 import React, { Component } from "react";
 import "./Home.css";
-import { Layout, Menu, Icon, Breadcrumb } from "antd";
-import { Link } from "react-router";
-import axios from "axios";
-import domain from "./domain";
-const { Header, Sider, Content } = Layout;
-const SubMenu = Menu.SubMenu;
+import { Layout, Icon, Breadcrumb } from "antd";
+// 引入侧边栏
+import SiderMenu from "./Common/SiderMenu"
+
+const { Header, Content } = Layout;
 
 class HomeCom extends Component {
   state = {
     menusList: [],
     collapsed: false,
-    clientHeight: 0,
-    openKeys: []
+    BreadcrumbName:""
   };
-  // submenu keys of first level
-  rootSubmenuKeys = ["0 ", "1 ", "2 ","3 ","4 ","5 ","6 ","7 ","8 ","9 "];
-
-  onOpenChange = openKeys => {
-    const latestOpenKey = openKeys.find(
-      key => this.state.openKeys.indexOf(key) === -1
-    );
-    if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-      this.setState({ openKeys });
-    } else {
-      this.setState({
-        openKeys: latestOpenKey ? [latestOpenKey] : []
-      });
-    }
-  };
-  toggle = () => {
+  BreadcrumbName = (e) => {
     this.setState({
-      collapsed: !this.state.collapsed
+      BreadcrumbName: e
     });
   };
-  componentWillMount() {
-    this.setState({
-      clientHeight: document.body.clientHeight
-    });
-    // axios.defaults.baseURL = "http://spsapp.spsing.com";
-
-    var Token =
-      "A98E6AE5AE191FB218DED0DF7AC178AF2B36CACA9A86876DB50B7190CE3E9F95375A47ACBDD377B9ED228D0ECC9C6ED29B7F0AF5B27176A37E83910CFA075304";
-    axios
-      .get(domain.baseurl + "/api/Menu/GetMenus", { params: { Token: Token } })
-      .then(res => {
-        this.setState({
-          menusList: res.data.Result
-        });
-        console.log(this.state.menusList);
-      })
-      .catch(res => {
-        console.log(res);
-      });
+  componentDidMount(){
+    console.log(this.state.BreadcrumbName)
   }
   render() {
     return (
       <Layout>
-        <Sider
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          style={{ background: "#fff", minHeight: this.state.clientHeight }}
-        >
-          <div className="logo">123213</div>
-
-          <Menu
-            mode="inline"
-            openKeys={this.state.openKeys}
-            onOpenChange={this.onOpenChange}
-          >
-            {this.state.menusList.map((item, index) => (
-              <SubMenu
-                key={index + " "}
-                title={
-                  <span>
-                    <Icon type="mail" />
-                    <span>{item.name}</span>
-                  </span>
-                }
-              >
-                {this.state.menusList[index].snippet.map((item1, index) => (
-                  <Menu.Item key={item1.urlf.split(".")[0]}>
-                    <Link to={item1.urlf.split(".")[0]}>{item1.title}</Link>
-                  </Menu.Item>
-                ))}
-              </SubMenu>
-            ))}
-            {/* <SubMenu
-              key={"sub" + 2}
-              title={
-                <span>
-                  <Icon type="mail" />
-                  <span>Navigation One</span>
-                </span>
-              }
-            >
-              <Menu.Item key="orderList">
-                <Link to="/orderList">userList</Link>
-              </Menu.Item>
-            </SubMenu> */}
-          </Menu>
-        </Sider>
+        <SiderMenu BreadcrumbName={this.BreadcrumbName}></SiderMenu>
         <Layout>
           <Header style={{ background: "#fff", padding: "0 16px" }}>
             <Icon
@@ -113,12 +35,9 @@ class HomeCom extends Component {
           <Breadcrumb style={{ padding: "24px 16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>
-              <a href="">Application Center</a>
+              <a href="">{this.state.BreadcrumbName}</a>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <a href="">Application List</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>An Application</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>An Application</Breadcrumb.Item> */}
           </Breadcrumb>
           <Content
             style={{
