@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "./Home.css";
+import "./Home.scss";
 import { Layout, Icon, Breadcrumb } from "antd";
 // 引入侧边栏
-import SiderMenu from "./Common/SiderMenu"
+import SiderMenu from "./Common/SiderMenu";
 
 const { Header, Content } = Layout;
 
@@ -10,20 +10,26 @@ class HomeCom extends Component {
   state = {
     menusList: [],
     collapsed: false,
-    BreadcrumbName:""
+    BreadcrumbName: ""
   };
-  BreadcrumbName = (e) => {
+  BreadcrumbName = e => {
     this.setState({
       BreadcrumbName: e
     });
   };
-  componentDidMount(){
-    console.log(this.state.BreadcrumbName)
-  }
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    });
+  };
+  componentDidMount() {}
   render() {
     return (
       <Layout>
-        <SiderMenu BreadcrumbName={this.BreadcrumbName}></SiderMenu>
+        <SiderMenu
+          BreadcrumbName={this.BreadcrumbName}
+          onToggle={this.state.collapsed}
+        />
         <Layout>
           <Header style={{ background: "#fff", padding: "0 16px" }}>
             <Icon
@@ -56,7 +62,11 @@ class HomeCom extends Component {
                 </li>
               );
             })} */}
-            {this.props.children ? "" : <div>12313123</div>}
+            {this.props.children ? (
+              ""
+            ) : (
+              <div className="homeContent">12313123</div>
+            )}
           </Content>
         </Layout>
       </Layout>

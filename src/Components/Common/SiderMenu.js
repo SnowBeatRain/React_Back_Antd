@@ -3,16 +3,22 @@ import { Layout, Menu, Icon, Breadcrumb } from "antd";
 import { Link } from "react-router";
 import axios from "axios";
 import domain from "../domain";
+import './SiderMenu.scss'
+
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class HomeCom extends Component {
-  state = {
-    menusList: [],
-    collapsed: false,
-    clientHeight: 0,
-    openKeys: ['sub0']
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      menusList: [],
+      collapsed: false,
+      clientHeight: 0,
+      openKeys: ["sub0"]
+    };
+  }
+
   // submenu keys of first level
   rootSubmenuKeys = [
     "sub0",
@@ -39,11 +45,7 @@ class HomeCom extends Component {
       });
     }
   };
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  };
+
   getBreadcrumb = e => {
     console.log(e.key);
     this.props.BreadcrumbName(e.key);
@@ -69,23 +71,24 @@ class HomeCom extends Component {
   }
   render() {
     return (
+      // 通过属性传值，父传子，控制侧边栏this.props.onToggle
       <Sider
         trigger={null}
         collapsible
-        collapsed={this.state.collapsed}
+        collapsed={this.props.onToggle}
         style={{ background: "#fff", minHeight: this.state.clientHeight }}
       >
-        <div className="logo">123213</div>
+        <div className="logo">React后台管理</div>
 
         <Menu
           mode="inline"
-          defaultSelectedKeys={['停车场列表']}
+          defaultSelectedKeys={["停车场列表"]}
           openKeys={this.state.openKeys}
           onOpenChange={this.onOpenChange}
         >
           {this.state.menusList.map((item, index) => (
             <SubMenu
-              key={"sub" +index}
+              key={"sub" + index}
               title={
                 <span>
                   <Icon type="mail" />
@@ -94,11 +97,8 @@ class HomeCom extends Component {
               }
             >
               {this.state.menusList[index].snippet.map((item1, index) => (
-                                  // key={item1.urlf.split(".")[0]}
-                <Menu.Item
-                  key={item1.title}
-                  onClick={this.getBreadcrumb}
-                >
+                // key={item1.urlf.split(".")[0]}
+                <Menu.Item key={item1.title} onClick={this.getBreadcrumb}>
                   <Link to={item1.urlf.split(".")[0]}>{item1.title}</Link>
                 </Menu.Item>
               ))}
