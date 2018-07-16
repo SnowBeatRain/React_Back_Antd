@@ -1,4 +1,4 @@
-const domain = "http://spsapp.spsing.com";
+const baseUrl = "http://spsapp.spsing.com";
 
 var setCookie = function(name, value) {
   var Days = 30;
@@ -23,7 +23,7 @@ var delCookie = function(name) {
     document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 };
 export default {
-  baseurl: domain,
+  baseUrl,
   setCookie,
   getCookie,
   delCookie

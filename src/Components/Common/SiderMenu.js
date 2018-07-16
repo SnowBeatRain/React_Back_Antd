@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Layout, Menu, Icon, Breadcrumb } from "antd";
+import { Layout, Menu, Icon } from "antd";
 import { Link } from "react-router";
-import axios from "axios";
-import domain from "../domain";
-import './SiderMenu.scss'
+import "./SiderMenu.scss";
+import axios from "../../axios/http";
+// import domain from "../domain";
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -56,12 +56,12 @@ class HomeCom extends Component {
       clientHeight: document.body.clientHeight
     });
     var Token =
-      "B18C52B53F6A071C709F6E7BB330216019F22307D62D12FBFA68D8DACB339D985800E354DF10D6D53ACAE4B3AE0D7E557DF700AF7C3AC06C6A7F1DB003CBD09F";
+      "F2BE3A66BAE5B7D5CA18665EE690DDD44CFE10DF5FF5A2C1E8FE509A0C99A75B49AB911F12F71CACA198C48F99F7882F2DF74791295C87D0990B134D7F612CBE";
     axios
-      .get(domain.baseurl + "/api/Menu/GetMenus", { params: { Token: Token } })
+      .get("/api/Menu/GetMenus", { Token: Token })
       .then(res => {
         this.setState({
-          menusList: res.data.Result
+          menusList: res.Result
         });
         console.log(this.state.menusList);
       })
