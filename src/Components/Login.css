@@ -11,3 +11,11 @@
  .login-form-button {
    width: 100%;
  }
+
+ canvas {
+   position: fixed;
+   top: 0px;
+   left: 0px;
+   z-index: -2;
+   opacity: 0.5;
+ }

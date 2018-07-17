@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Menu, Icon, message } from "antd";
 import { Link } from "react-router";
 import "./SiderMenu.scss";
 import axios from "../../axios/http";
-// import domain from "../domain";
+import domain from "../domain";
+import { browserHistory } from "react-router";
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -15,59 +16,70 @@ class HomeCom extends Component {
       menusList: [],
       collapsed: false,
       clientHeight: 0,
-      openKeys: ["sub0"]
+      rootSubmenuKeys: [],
+      // 默认选中的子菜单名称
+      defaultSelectedKeys: "",
+      // 默认选中的父菜单名称
+      openKeys: []
     };
   }
 
   // submenu keys of first level
-  rootSubmenuKeys = [
-    "sub0",
-    "sub1",
-    "sub2",
-    "sub3",
-    "sub4",
-    "sub5",
-    "sub6",
-    "sub7",
-    "sub8",
-    "sub9"
-  ];
 
   onOpenChange = openKeys => {
     const latestOpenKey = openKeys.find(
       key => this.state.openKeys.indexOf(key) === -1
     );
-    if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+    if (this.state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       this.setState({ openKeys });
     } else {
       this.setState({
         openKeys: latestOpenKey ? [latestOpenKey] : []
       });
     }
+    localStorage.setItem("openKeys", openKeys[1]);
   };
 
   getBreadcrumb = e => {
-    console.log(e.key);
     this.props.BreadcrumbName(e.key);
+    localStorage.setItem("defaultSelectedKeys", e.key);
   };
   componentWillMount() {
-    // domain.setCookie("a",123)
+    var okeys = localStorage.getItem("openKeys");
     this.setState({
-      clientHeight: document.body.clientHeight
+      clientHeight: document.body.clientHeight,
+      // 获取本地存储的一级菜单选中状态
+      openKeys: [okeys],
+      // 获取本地存储点击选中的子菜单用于刷新时选中
+      defaultSelectedKeys: localStorage.getItem("defaultSelectedKeys")
     });
-    var Token =
-      "F2BE3A66BAE5B7D5CA18665EE690DDD44CFE10DF5FF5A2C1E8FE509A0C99A75B49AB911F12F71CACA198C48F99F7882F2DF74791295C87D0990B134D7F612CBE";
-    axios
-      .get("/api/Menu/GetMenus", { Token: Token })
-      .then(res => {
-        this.setState({
-          menusList: res.Result
+    if (domain.getCookie("token")) {
+      axios
+        .get("/api/Menu/GetMenus", { Token: domain.getCookie("token") })
+        .then(res => {
+          this.setState({
+            menusList: res.Result
+          });
+          // 创建一个空数组，用于存放所有的列表集合，动态赋值给rootSubmenuKeys，以便于侧边栏只打开一个
+          var arr = [];
+          res.Result.map((item, index) => {
+            var str = "sub" + index;
+            arr.push(str);
+          });
+          this.setState({
+            menusList: res.Result,
+            rootSubmenuKeys: arr
+          });
+        })
+        .catch(res => {
+          console.log(res);
         });
-        console.log(this.state.menusList);
-      })
-      .catch(res => {
-        console.log(res);
-      });
+    } else {
+      message.error("请先登录", 2);
+      setTimeout(() => {
+        browserHistory.push("/login");
+      }, 2000);
+    }
   }
   render() {
     return (
@@ -82,7 +94,7 @@ class HomeCom extends Component {
 
         <Menu
           mode="inline"
-          defaultSelectedKeys={["停车场列表"]}
+          defaultSelectedKeys={[this.state.defaultSelectedKeys]}
           openKeys={this.state.openKeys}
           onOpenChange={this.onOpenChange}
         >

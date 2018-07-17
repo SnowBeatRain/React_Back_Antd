@@ -17,9 +17,9 @@ export default class RouterMap extends React.Component {
           <div>
             <Route exact path="/" component={Home}>
               {/* <IndexRoute to="/userList" component={UserList} /> */}
-              <Route path="/userList" component={UserList} />
-              <Route path="/orderList" component={OrderList} />
-              <Route path="/backparklist" component={BackParkList} />
+              <Route path="/BackUserList" component={UserList} />
+              <Route path="/BackAppointmentOrderList" component={OrderList} />
+              <Route path="/BackParkList" component={BackParkList} />
             </Route>
             <Route path="/login" component={Login} />
           </div>

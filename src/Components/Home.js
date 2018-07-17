@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import "./Home.scss";
-import { Layout, Icon, Breadcrumb } from "antd";
+import { Menu, Dropdown, Layout, Icon, Breadcrumb } from "antd";
+import { browserHistory } from "react-router";
 // 引入侧边栏
 import SiderMenu from "./Common/SiderMenu";
+import domain from "./domain";
 
 const { Header, Content } = Layout;
 
@@ -10,6 +12,7 @@ class HomeCom extends Component {
   state = {
     menusList: [],
     collapsed: false,
+    username:'',
     BreadcrumbName: ""
   };
   BreadcrumbName = e => {
@@ -22,8 +25,25 @@ class HomeCom extends Component {
       collapsed: !this.state.collapsed
     });
   };
-  componentDidMount() {}
+  loginOut() {
+    domain.delCookie('username')
+    domain.delCookie('token')
+    browserHistory.push("/login");
+  }
+  componentDidMount() {
+    this.setState({
+      BreadcrumbName: localStorage.getItem("defaultSelectedKeys"),
+      username:domain.getCookie('username')
+    });
+    
+  }
+
   render() {
+    const menu = (
+      <Menu>
+        <Menu.Item onClick={this.loginOut}>退出登录</Menu.Item>
+      </Menu>
+    );
     return (
       <Layout>
         <SiderMenu
@@ -37,6 +57,11 @@ class HomeCom extends Component {
               type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
               onClick={this.toggle}
             />
+            <Dropdown className="userName" overlay={menu} trigger={["click"]}>
+              <a className="ant-dropdown-link" href="">
+              <Icon type="user" /> {this.state.username} <Icon type="down" />
+              </a>
+            </Dropdown>,
           </Header>
           <Breadcrumb style={{ padding: "24px 16px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>

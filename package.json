@@ -6,6 +6,7 @@
     "antd": "^3.6.4",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.8.0",
+    "js-md5": "^0.7.3",
     "qs": "^6.5.2",
     "react": "^16.4.1",
     "react-app-rewired": "^1.5.2",
@@ -14,7 +15,7 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "set PORT=9000 HOST=0.0.0.0 && react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
