@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Home.scss";
 import { Menu, Dropdown, Layout, Icon, Breadcrumb } from "antd";
-import { browserHistory } from "react-router";
+import { hashHistory } from "react-router";
 // 引入侧边栏
 import SiderMenu from "./Common/SiderMenu";
 import domain from "./domain";
@@ -26,9 +26,12 @@ class HomeCom extends Component {
     });
   };
   loginOut() {
+    // 退出登录 清楚选中菜单，和登录信息 
     domain.delCookie('username')
     domain.delCookie('token')
-    browserHistory.push("/login");
+    localStorage.removeItem("defaultSelectedKeys")
+    localStorage.removeItem("openKeys")
+    hashHistory.push("/login");
   }
   componentDidMount() {
     this.setState({

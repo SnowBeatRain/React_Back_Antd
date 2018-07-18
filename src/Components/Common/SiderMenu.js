@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import "./SiderMenu.scss";
 import axios from "../../axios/http";
 import domain from "../domain";
-import { browserHistory } from "react-router";
+import { hashHistory } from "react-router";
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -77,7 +77,7 @@ class HomeCom extends Component {
     } else {
       message.error("请先登录", 2);
       setTimeout(() => {
-        browserHistory.push("/login");
+        hashHistory.push("/login");
       }, 2000);
     }
   }

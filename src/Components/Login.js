@@ -3,7 +3,7 @@ import "./Login.css";
 import { Form, Icon, Input, Button, message } from "antd";
 import md5 from "js-md5";
 import axios from "../axios/http";
-import { browserHistory } from "react-router";
+import { hashHistory } from "react-router";
 import domain from "./domain";
 
 const FormItem = Form.Item;
@@ -24,7 +24,7 @@ class Login extends Component {
             domain.setCookie("token", data.Result);
             domain.setCookie("username", values.userName);
             setTimeout(() => {
-              browserHistory.push("/");
+              hashHistory.push("/");
             }, 2000);
           })
           .catch();

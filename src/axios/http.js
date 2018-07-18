@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 import { message} from "antd";
-import { browserHistory } from "react-router";
+import { hashHistory } from "react-router";
 
 // console.log(axios.defaults)
 // 创建axios默认请求
@@ -28,7 +28,7 @@ axios.interceptors.response.use(
       message.destroy();
       message.warning(response.data.Result, 2);
       setTimeout(() => {
-        browserHistory.push("/login");
+        hashHistory.push("/login");
       }, 2000);
     } else {
       message.destroy();
