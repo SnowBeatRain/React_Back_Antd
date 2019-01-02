@@ -5,6 +5,7 @@ import "./SiderMenu.scss";
 import axios from "../../axios/http";
 import domain from "../domain";
 import { hashHistory } from "react-router";
+import { urlToList } from '../_utils/pathTools';
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -30,6 +31,8 @@ class HomeCom extends Component {
     const latestOpenKey = openKeys.find(
       key => this.state.openKeys.indexOf(key) === -1
     );
+    // 打开菜单
+    this.props.openMenu(true);
     if (this.state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       this.setState({ openKeys });
     } else {
@@ -45,14 +48,22 @@ class HomeCom extends Component {
     localStorage.setItem("defaultSelectedKeys", e.key);
   };
   componentWillMount() {
-    var okeys = localStorage.getItem("openKeys");
-    this.setState({
-      clientHeight: document.body.clientHeight,
-      // 获取本地存储的一级菜单选中状态
-      openKeys: [okeys],
-      // 获取本地存储点击选中的子菜单用于刷新时选中
-      defaultSelectedKeys: localStorage.getItem("defaultSelectedKeys")
-    });
+    console.log(this.props);
+    if (this.props.closeAll) {
+      this.setState({
+        defaultSelectedKeys: "",
+        openKeys: []
+      });
+    } else {
+      var okeys = localStorage.getItem("openKeys");
+      this.setState({
+        clientHeight: document.body.clientHeight,
+        // 获取本地存储的一级菜单选中状态
+        openKeys: [okeys],
+        // 获取本地存储点击选中的子菜单用于刷新时选中
+        defaultSelectedKeys: localStorage.getItem("defaultSelectedKeys")
+      });
+    }
     if (domain.getCookie("token")) {
       axios
         .get("/api/Menu/GetMenus", { Token: domain.getCookie("token") })
@@ -94,8 +105,10 @@ class HomeCom extends Component {
 
         <Menu
           mode="inline"
-          defaultSelectedKeys={[this.state.defaultSelectedKeys]}
-          openKeys={this.state.openKeys}
+          defaultSelectedKeys={
+            this.props.cleanOpen ? [] : [this.state.defaultSelectedKeys]
+          }
+          openKeys={this.props.cleanOpen ? [] : this.state.openKeys}
           onOpenChange={this.onOpenChange}
         >
           {this.state.menusList.map((item, index) => (

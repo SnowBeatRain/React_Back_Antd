@@ -12,12 +12,19 @@ class HomeCom extends Component {
   state = {
     menusList: [],
     collapsed: false,
-    username:'',
-    BreadcrumbName: ""
+    username: "",
+    BreadcrumbName: "",
+    // 关闭所有菜单
+    closeAll: false
   };
   BreadcrumbName = e => {
     this.setState({
       BreadcrumbName: e
+    });
+  };
+  openMenu = e => {
+    this.setState({
+      closeAll: false
     });
   };
   toggle = () => {
@@ -26,19 +33,27 @@ class HomeCom extends Component {
     });
   };
   loginOut() {
-    // 退出登录 清楚选中菜单，和登录信息 
-    domain.delCookie('username')
-    domain.delCookie('token')
-    localStorage.removeItem("defaultSelectedKeys")
-    localStorage.removeItem("openKeys")
+    // 退出登录 清楚选中菜单，和登录信息
+    domain.delCookie("username");
+    domain.delCookie("token");
+    localStorage.removeItem("defaultSelectedKeys");
+    localStorage.removeItem("openKeys");
     hashHistory.push("/login");
   }
+  clickHome = e => {
+    this.setState({
+      closeAll: true
+    });
+    console.log(this.state.closeAll);
+    localStorage.removeItem("defaultSelectedKeys");
+    localStorage.removeItem("openKeys");
+    hashHistory.push("/");
+  };
   componentDidMount() {
     this.setState({
       BreadcrumbName: localStorage.getItem("defaultSelectedKeys"),
-      username:domain.getCookie('username')
+      username: domain.getCookie("username")
     });
-    
   }
 
   render() {
@@ -51,7 +66,9 @@ class HomeCom extends Component {
       <Layout>
         <SiderMenu
           BreadcrumbName={this.BreadcrumbName}
+          openMenu={this.openMenu}
           onToggle={this.state.collapsed}
+          cleanOpen={this.state.closeAll}
         />
         <Layout>
           <Header style={{ background: "#fff", padding: "0 16px" }}>
@@ -62,17 +79,19 @@ class HomeCom extends Component {
             />
             <Dropdown className="userName" overlay={menu} trigger={["click"]}>
               <a className="ant-dropdown-link" href="">
-              <Icon type="user" /> {this.state.username} <Icon type="down" />
+                <Icon type="user" /> {this.state.username} <Icon type="down" />
               </a>
-            </Dropdown>,
+            </Dropdown>
+            ,
           </Header>
-          <Breadcrumb style={{ padding: "24px 16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
+          {/* <Breadcrumb style={{ padding: "24px 16px 0" }}>
+            <Breadcrumb.Item>
+              <span onClick={this.clickHome}>Home</span>
+            </Breadcrumb.Item>
             <Breadcrumb.Item>
               <a href="">{this.state.BreadcrumbName}</a>
             </Breadcrumb.Item>
-            {/* <Breadcrumb.Item>An Application</Breadcrumb.Item> */}
-          </Breadcrumb>
+          </Breadcrumb> */}
           <Content
             style={{
               margin: "24px 16px",
